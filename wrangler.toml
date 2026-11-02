@@ -1,0 +1,12 @@
+# Cloudflare Pages: the static site in out/, the functions in functions/, and
+# one D1 database for accounts. See docs/deploy.md.
+name = "sleuthhound"
+pages_build_output_dir = "out"
+compatibility_date = "2026-10-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "sleuthhound-accounts"
+# Replace with the id that `npx wrangler d1 create sleuthhound-accounts` prints.
+database_id = "00000000-0000-0000-0000-000000000000"
+migrations_dir = "d1/migrations"

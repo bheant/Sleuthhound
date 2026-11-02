@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022"],
+    "types": ["@cloudflare/workers-types"],
+    "strict": true,
+    "noEmit": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "skipLibCheck": true,
+    "isolatedModules": true
+  },
+  "include": ["functions/**/*.ts", "server/**/*.ts"],
+  "exclude": ["**/*.test.ts", "server/testing"]
+}

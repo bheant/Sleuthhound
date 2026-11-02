@@ -1,0 +1,602 @@
+@import "tailwindcss";
+
+/*
+  Design tokens.
+  Every colour in the app comes from this list. Tailwind names in brackets.
+*/
+:root {
+  --bg-canvas: #000000; /* [canvas] page background */
+  --bg-plate: #040506; /* [plate] map, radar and hub plates */
+  --bg-field: #0b0c0e; /* [field] inputs, node tiles, loading blocks */
+
+  --border-faint: #16181c; /* [faint] plate outlines */
+  --border-subtle: #1c1f24; /* [subtle] stored-key box, footer rule */
+  --border-default: #2b2f36; /* [rule] section rules, inputs */
+  --border-strong: #3a3f47; /* [strong] banners, confirm rows, filter chips */
+  --border-control: #5b616a; /* [control] outline buttons inside rows */
+
+  --text-primary: #e8eaed; /* [ink] main text, numbers */
+  --text-secondary: #9aa0a8; /* [ink-secondary] labels, metadata */
+  --text-muted: #7a818a; /* [ink-muted] timestamps, placeholders */
+
+  --accent-data: #8a90f2; /* [data] radar markers, run progress line */
+  --primary-fill: #101242; /* [primary] Sign in, selected toggles */
+  --primary-border: #3b41e6; /* [primary-edge] */
+  --focus: #3b66e6; /* [focus] focus ring */
+  --select: #e9d16e; /* [select] the current selection only */
+  --status-ok: #3fb68b; /* [ok] */
+  --status-overdue: #f08a4b; /* [overdue] */
+  --status-error-line: #e5534b; /* [error] lines */
+  --status-error-text: #f07067; /* [error-ink] text */
+
+  /* Values the design source uses beyond the token table (the screenshots win). */
+  --primary-hover: #5056ec; /* [primary-hover] filled button hover */
+  --text-soft: #a3a9b0; /* [ink-soft] login labels and links */
+  --text-nav: #8b9198; /* [ink-nav] header nav links */
+  --border-bright: #c9cdd2; /* [bright] header buttons */
+  --logo: #7a8088; /* [logo] crosshair */
+  --plate-grid: #0f1216; /* hub plate grid lines */
+  --plate-axis: #1a1e24; /* map centre lines */
+  --river-band: #0c1520; /* the Thames on the map */
+  --river-line: #16263a;
+  --row-hover: #0a0b0e; /* [row-hover] table row under the pointer */
+  --row-selected: #10121a; /* [row-selected] selected row, selected Deadlines row */
+  --data-mid: rgba(138, 144, 242, 0.45); /* [data-mid] 70 to 79 map marker fill */
+  --cluster: #181c22; /* [cluster] shared-address marker fill */
+  --overdue-edge: #7a4a2a; /* [overdue-edge] overdue tag border, overdue timeline bar */
+  --select-dim: #8a7a3e; /* [select-dim] selected timeline bar */
+  --scrim: rgba(0, 0, 0, 0.72); /* behind search and shortcuts */
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-move: cubic-bezier(0.77, 0, 0.175, 1);
+  --gutter: clamp(16px, 3.4vw, 48px);
+}
+
+@theme inline {
+  --color-*: initial;
+  --color-canvas: var(--bg-canvas);
+  --color-plate: var(--bg-plate);
+  --color-field: var(--bg-field);
+  --color-faint: var(--border-faint);
+  --color-subtle: var(--border-subtle);
+  --color-rule: var(--border-default);
+  --color-strong: var(--border-strong);
+  --color-control: var(--border-control);
+  --color-ink: var(--text-primary);
+  --color-ink-secondary: var(--text-secondary);
+  --color-ink-muted: var(--text-muted);
+  --color-ink-soft: var(--text-soft);
+  --color-ink-nav: var(--text-nav);
+  --color-data: var(--accent-data);
+  --color-primary: var(--primary-fill);
+  --color-primary-edge: var(--primary-border);
+  --color-primary-hover: var(--primary-hover);
+  --color-focus: var(--focus);
+  --color-select: var(--select);
+  --color-ok: var(--status-ok);
+  --color-overdue: var(--status-overdue);
+  --color-error: var(--status-error-line);
+  --color-error-ink: var(--status-error-text);
+  --color-bright: var(--border-bright);
+  --color-logo: var(--logo);
+  --color-row-hover: var(--row-hover);
+  --color-row-selected: var(--row-selected);
+  --color-data-mid: var(--data-mid);
+  --color-cluster: var(--cluster);
+  --color-overdue-edge: var(--overdue-edge);
+  --color-select-dim: var(--select-dim);
+  --color-scrim: var(--scrim);
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-transparent: transparent;
+
+  --font-sans: var(--font-plex), system-ui, sans-serif;
+  --font-weight-*: initial;
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+
+  --radius-*: initial;
+  --radius-login: 2px;
+
+  --shadow-*: initial;
+
+  --ease-out: var(--ease-out);
+  --ease-move: var(--ease-move);
+  --spacing-gutter: var(--gutter);
+}
+
+/* Type roles. */
+@utility type-page-title {
+  font-size: clamp(48px, 6.4vw, 92px);
+  line-height: 1;
+  font-weight: 300;
+  letter-spacing: -0.035em;
+}
+@utility type-page-title-xl {
+  font-size: clamp(56px, 8.4vw, 124px);
+  line-height: 1;
+  font-weight: 300;
+  letter-spacing: -0.035em;
+}
+@utility type-lede {
+  font-size: clamp(20px, 2vw, 28px);
+  line-height: 1.3;
+  font-weight: 300;
+}
+@utility type-section {
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 300;
+  letter-spacing: -0.015em;
+}
+@utility type-row {
+  font-size: 20px;
+  line-height: 28px;
+}
+@utility type-body {
+  font-size: 16px;
+  line-height: 24px;
+}
+@utility type-label {
+  font-size: 14px;
+  line-height: 20px;
+}
+@utility type-chart {
+  font-size: 12px;
+  line-height: 16px;
+}
+
+@layer base {
+  html {
+    background: var(--bg-canvas);
+    color-scheme: dark;
+  }
+  body {
+    margin: 0;
+    background: var(--bg-canvas);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 24px;
+    font-variant-numeric: tabular-nums;
+    -webkit-font-smoothing: antialiased;
+  }
+  a {
+    color: var(--text-secondary);
+  }
+  a:hover {
+    color: var(--text-primary);
+  }
+  :focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+  input::placeholder {
+    color: var(--text-muted);
+  }
+  ::selection {
+    background: var(--primary-border);
+    color: #ffffff;
+  }
+}
+
+/* Links that read as text with a quiet underline. */
+@utility link-quiet {
+  text-decoration-line: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--border-strong);
+  transition: color 120ms ease-out;
+}
+
+/* Company names linked from Home's run summary. */
+@utility sh-ent {
+  color: var(--text-primary);
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 5px;
+  text-decoration-color: var(--border-control);
+  transition: text-decoration-color 120ms ease-out;
+  &:hover {
+    color: var(--text-primary);
+    text-decoration-color: var(--text-primary);
+  }
+}
+
+/* Outline buttons invert on hover; every button presses to 0.97. */
+@utility press {
+  transition:
+    background-color 120ms ease-out,
+    color 120ms ease-out,
+    border-color 120ms ease-out,
+    opacity 120ms ease-out,
+    transform 100ms var(--ease-out);
+  &:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+}
+
+/* Motion: only transform and opacity, ease-out, under 300ms for interface changes. */
+@keyframes sh-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes sh-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes sh-swap {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes sh-shake-a {
+  0%,
+  100% {
+    transform: none;
+  }
+  20% {
+    transform: translateX(-7px);
+  }
+  40% {
+    transform: translateX(6px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  80% {
+    transform: translateX(2px);
+  }
+}
+/* An identical copy, so alternating classes replays the shake on every failure. */
+@keyframes sh-shake-b {
+  0%,
+  100% {
+    transform: none;
+  }
+  20% {
+    transform: translateX(-7px);
+  }
+  40% {
+    transform: translateX(6px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  80% {
+    transform: translateX(2px);
+  }
+}
+@keyframes sh-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+@keyframes sh-loading {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.sh-in {
+  animation: sh-in 320ms var(--ease-out) both;
+}
+.sh-d1 {
+  animation-delay: 60ms;
+}
+.sh-d2 {
+  animation-delay: 120ms;
+}
+.sh-d3 {
+  animation-delay: 180ms;
+}
+.sh-swap {
+  animation: sh-swap 200ms var(--ease-out) both;
+}
+.sh-fade {
+  animation: sh-fade 200ms var(--ease-out) both;
+}
+.sh-shake-a {
+  animation: sh-shake-a 340ms var(--ease-out) both;
+}
+.sh-shake-b {
+  animation: sh-shake-b 340ms var(--ease-out) both;
+}
+.sh-pulse {
+  animation: sh-pulse 1.2s ease-in-out infinite;
+}
+.sh-loading {
+  animation: sh-loading 1.2s ease-in-out infinite;
+}
+.sh-toast {
+  transition:
+    opacity 200ms ease-out,
+    transform 220ms var(--ease-out);
+  @starting-style {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+.sh-run-line {
+  transform-origin: 0 50%;
+  transition: transform 400ms var(--ease-out);
+}
+
+/* Connections hub: lines grow out from the centre, then the node and label
+   appear; a removed service's line pulls back in. A one-off data entrance, so
+   it may run past 300ms. */
+@keyframes hub-grow {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes hub-shrink {
+  from {
+    transform: none;
+  }
+  to {
+    transform: scale(0);
+  }
+}
+@keyframes hub-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes hub-fadeout {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+.hub-line {
+  transform-box: fill-box;
+  animation: hub-grow 600ms var(--ease-out) both;
+}
+.hub-line[data-leaving="true"] {
+  animation: hub-shrink 220ms var(--ease-move) 80ms both;
+}
+.hub-node {
+  animation: hub-pop 220ms var(--ease-out) 480ms both;
+}
+.hub-label {
+  animation: sh-fade 200ms ease-out 520ms both;
+}
+.hub-node[data-leaving="true"],
+.hub-label[data-leaving="true"] {
+  animation: hub-fadeout 160ms ease-out both;
+}
+
+/* Chart bars rise one after another, once. */
+@keyframes sh-rise {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: none;
+  }
+}
+.sh-bar {
+  transform-origin: 50% 100%;
+  animation: sh-rise 360ms var(--ease-out) both;
+}
+
+/* The Add source panel slides in from the right. */
+.sh-panel {
+  transition: transform 240ms var(--ease-out);
+  @starting-style {
+    transform: translateX(100%);
+  }
+}
+
+/* New Companies workspace. */
+
+/* Rows: the name button covers the row; Keep and Discard show on hover, focus
+   and selection. A decided row slides out over 170ms. */
+.sh-row {
+  position: relative;
+  transition:
+    background-color 120ms ease-out,
+    opacity 170ms ease-out,
+    transform 170ms var(--ease-out);
+}
+.sh-row:hover {
+  background: var(--row-hover);
+}
+.sh-row[data-sel="true"] {
+  background: var(--row-selected);
+}
+.sh-row[data-leaving="true"] {
+  opacity: 0;
+  transform: translateX(16px);
+}
+.sh-open::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.sh-open:focus-visible {
+  outline: none;
+}
+.sh-row:has(.sh-open:focus-visible) {
+  box-shadow: inset 0 0 0 2px var(--focus);
+}
+.sh-acts {
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 120ms ease-out;
+}
+.sh-row:hover .sh-acts,
+.sh-row:focus-within .sh-acts,
+.sh-row[data-sel="true"] .sh-acts {
+  opacity: 1;
+}
+
+/* Map markers appear left to right once; hidden labels show on hover. */
+@keyframes sh-blip {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.sh-blip {
+  animation: sh-blip 260ms var(--ease-out) both;
+}
+.sh-mk:hover,
+.sh-mk:focus-visible {
+  z-index: 5;
+}
+.sh-mk:hover .sh-mkl {
+  color: var(--text-primary);
+}
+.sh-mkl-hid {
+  opacity: 0;
+  transition: opacity 120ms ease-out;
+}
+.sh-mk:hover .sh-mkl-hid,
+.sh-mk:focus-visible .sh-mkl-hid {
+  opacity: 1;
+}
+.sh-reticle {
+  transition: transform 320ms var(--ease-move);
+}
+@keyframes sh-lock {
+  from {
+    opacity: 0.25;
+    transform: translate(-50%, -50%) scale(1.6);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+.sh-lock {
+  animation: sh-lock 300ms var(--ease-out) both;
+}
+.sh-vfade {
+  animation: sh-fade 160ms ease-out both;
+}
+
+/* The Filters menu scales from its button. */
+@keyframes sh-menu {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.sh-menu {
+  transform-origin: top right;
+  animation: sh-menu 150ms var(--ease-out) both;
+}
+
+/* Keys in the shortcuts panel and search footer. */
+.sh-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  border: 1px solid var(--border-strong);
+  color: var(--border-bright);
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 22px;
+}
+
+/* Reduced motion: movement becomes a plain fade; shakes, presses and pulses go. */
+@media (prefers-reduced-motion: reduce) {
+  .sh-in,
+  .sh-swap,
+  .sh-blip,
+  .sh-menu,
+  .sh-bar {
+    animation-name: sh-fade;
+  }
+  .sh-lock {
+    animation: none;
+  }
+  .sh-reticle {
+    transition: none;
+  }
+  .sh-row[data-leaving="true"] {
+    transform: none;
+  }
+  .sh-shake-a,
+  .sh-shake-b,
+  .sh-pulse,
+  .sh-loading {
+    animation: none;
+  }
+  .press:active:not(:disabled) {
+    transform: none;
+  }
+  .sh-toast {
+    @starting-style {
+      transform: none;
+    }
+  }
+  .sh-run-line {
+    transition: none;
+  }
+  .hub-line,
+  .hub-node,
+  .hub-label {
+    animation-name: sh-fade;
+  }
+  .hub-line[data-leaving="true"],
+  .hub-node[data-leaving="true"],
+  .hub-label[data-leaving="true"] {
+    animation-name: hub-fadeout;
+  }
+  .sh-panel {
+    transition: opacity 200ms ease-out;
+    @starting-style {
+      transform: none;
+      opacity: 0;
+    }
+  }
+}
+
