@@ -6,7 +6,9 @@ Lead generation for UK B2B sales. Sleuthhound pulls newly registered companies f
 
 Live at [sleuthhound.net](https://sleuthhound.net/sample). The sample workspace works without an account.
 
-VIDEO_URL
+https://github.com/user-attachments/assets/697ae84b-1745-4a0d-8112-4bb3fe5ea044
+
+
 
 ## Background
 
