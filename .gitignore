@@ -1,0 +1,39 @@
+# secrets and local data
+.env
+.env.*
+.data/
+
+# dependencies and builds
+node_modules/
+.next/
+out/
+coverage/
+*.tsbuildinfo
+
+# OS and editor
+.DS_Store
+.vscode/
+
+# next.js and tooling
+next-env.d.ts
+build/
+*.pem
+npm-debug.log*
+.vercel
+.gstack/
+test-data/
+
+# copied from node_modules by scripts/prepare.mjs
+public/sql-wasm.wasm
+
+# wrangler local state (local D1)
+.wrangler/
+
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
+
+# evaluation data, never committed
+analysis/reviews.csv
+.ipynb_checkpoints/

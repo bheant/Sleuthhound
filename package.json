@@ -1,0 +1,61 @@
+{
+  "name": "sleuthhound",
+  "version": "0.1.0",
+  "private": true,
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "scripts": {
+    "predev": "node scripts/prepare.mjs",
+    "dev": "concurrently -n web,api \"next dev -H 127.0.0.1\" \"npm run dev:api\"",
+    "dev:api": "wrangler d1 migrations apply sleuthhound-accounts --local && wrangler pages dev public --ip 127.0.0.1 --port 8788",
+    "prebuild": "node scripts/prepare.mjs",
+    "build": "next build",
+    "postbuild": "node scripts/sw.mjs && node scripts/headers.mjs",
+    "preview": "wrangler d1 migrations apply sleuthhound-accounts --local && wrangler pages dev out --ip 127.0.0.1 --port 8788",
+    "deploy": "npm run build && wrangler pages deploy",
+    "typecheck": "tsc --noEmit && tsc -p tsconfig.workers.json",
+    "lint": "eslint",
+    "test": "vitest run",
+    "db:generate": "drizzle-kit generate && node scripts/prepare.mjs",
+    "admin:grant": "node scripts/admin-grant.mjs",
+    "invite": "node scripts/invite.mjs"
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "^4.0.83",
+    "@ai-sdk/openai": "^4.0.97",
+    "@ai-sdk/xai": "^5.0.25",
+    "ai": "^7.0.145",
+    "dexie": "4.4.6",
+    "drizzle-orm": "^0.45.4",
+    "lucide-react": "^1.59.0",
+    "next": "16.4.2",
+    "papaparse": "^5.7.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "sql.js": "1.14.2",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "5.20261014.1",
+    "@tailwindcss/turbopack": "^4",
+    "@types/node": "^24.19.2",
+    "@types/papaparse": "^5.5.2",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/sql.js": "^1.4.11",
+    "concurrently": "10.0.6",
+    "drizzle-kit": "^0.31.11",
+    "eslint": "^9",
+    "eslint-config-next": "16.4.2",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "vitest": "^5.0.5",
+    "wrangler": "4.151.0"
+  },
+  "allowScripts": {
+    "unrs-resolver@1.12.2": true,
+    "esbuild@0.28.2": true,
+    "esbuild@0.25.12": true,
+    "esbuild@0.18.20": true,
+    "workerd@1.20261012.1": true
+  }
+}
